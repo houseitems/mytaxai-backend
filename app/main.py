@@ -37,17 +37,6 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "healthy", "service": "MyTaxAI API"}
-
-@app.post("/api/ask")
-async def ask_tax_question(tax_q: TaxQuestion):
-    """Ask AI a tax question"""
-    # ADD THIS CHECK FIRST:
-    if client is None:
-        return {
-            "success": False,
-            "error": "DeepSeek API key not configured",
-            "message": "Please add DEEPSEEK_API_KEY to Railway Variables"
-        }
     
     try:
         response = client.chat.completions.create(
