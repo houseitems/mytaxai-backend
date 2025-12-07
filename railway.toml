@@ -2,5 +2,11 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "python -c 'import os; print(\"Starting...\"); os.system(\"uvicorn app.main:app --host 0.0.0.0 --port $PORT\")'"
 healthcheckPath = "/health"
+healthcheckTimeout = 60
+
+[[services]]
+type = "web"
+autoStop = false  # Add this
+minInstances = 1  # Add this
