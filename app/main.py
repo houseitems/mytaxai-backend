@@ -37,26 +37,12 @@ def health():
 
 @app.post("/api/ask")
 async def ask_tax_question(tax_q: TaxQuestion):
-    """Ask AI a tax question"""
-    try:
-        response = client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": "You are a professional UK tax advisor. Always mention this is not professional advice. Use UK tax rates for 2024/25."},
-                {"role": "user", "content": tax_q.question}
-            ],
-            max_tokens=500,
-            temperature=0.7
-        )
-        
-        return {
-            "success": True,
-            "answer": response.choices[0].message.content,
-            "tokens": response.usage.total_tokens
-        }
-        
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    """Ask AI a tax question - TEMPORARILY DISABLED"""
+    return {
+        "success": False,
+        "error": "AI service temporarily disabled during deployment",
+        "message": "Backend is running! Add DeepSeek API key to enable AI."
+    }
 
 # Simple tax calculator
 @app.get("/api/calculate/{income}")
