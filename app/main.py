@@ -15,13 +15,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize DeepSeek - Handle missing key gracefully
-# Initialize DeepSeek - will use Railway environment variable
-api_key = os.getenv("DEEPSEEK_API_KEY", "dummy-key-for-now")
-client = OpenAI(
-    api_key=api_key,
-    base_url="https://api.deepseek.com"
-)
+# Initialize DeepSeek - Handle missing key
+api_key = os.getenv("DEEPSEEK_API_KEY")
+if api_key and api_key != "dummy-key-for-now":
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.deepseek.com"
+    )
+    print("✅ DeepSeek client initialized")
 else:
     client = None
     print("⚠️ DeepSeek API key not set. AI functionality disabled.")
@@ -37,6 +38,17 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "healthy", "service": "MyTaxAI API"}
+
+@app.post("/api/ask")
+async def ask_tax_question(tax_q: TaxQuestion):
+    """Ask AI a tax question"""
+    # Check if client is initialized
+    if client is None:
+        return {
+            "success": False,
+            "error": "DeepSeek API key not configured",
+            "message": "Please add DEEPSEEK_API_KEY to Railway Variables"
+        }
     
     try:
         response = client.chat.completions.create(
