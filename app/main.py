@@ -15,12 +15,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize DeepSeek - NOW ENABLED
+# Initialize DeepSeek - Handle missing key gracefully
 api_key = os.getenv("DEEPSEEK_API_KEY")
-client = OpenAI(
-    api_key=api_key,
-    base_url="https://api.deepseek.com"
-)
+if api_key:
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.deepseek.com"
+    )
+else:
+    client = None
+    print("⚠️ DeepSeek API key not set. AI functionality disabled.")
 
 class TaxQuestion(BaseModel):
     question: str
