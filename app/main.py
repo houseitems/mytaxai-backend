@@ -9,7 +9,12 @@ app = FastAPI(title="MyTaxAI Backend")
 # Allow your frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all for now
+    allow_origins=[
+        "http://localhost:3000",  # Local development
+        "https://mytaxai-app.vercel.app",  # Your Vercel frontend
+        "https://*.vercel.app",  # All Vercel deployments
+        "https://mytaxai.co.uk",  # Your custom domain (future)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
