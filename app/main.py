@@ -15,13 +15,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize DeepSeek - will use Railway environment variable
-api_key = os.getenv("DEEPSEEK_API_KEY", "dummy-key-for-now")
+# Initialize DeepSeek - NOW ENABLED
+api_key = os.getenv("DEEPSEEK_API_KEY")
 client = OpenAI(
     api_key=api_key,
     base_url="https://api.deepseek.com"
 )
-# client = None # Temporary placeholder
 
 class TaxQuestion(BaseModel):
     question: str
